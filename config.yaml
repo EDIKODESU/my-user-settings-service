@@ -1,0 +1,16 @@
+log:
+  level: debug
+  disable_sentry: true
+
+db:
+  url: postgres://Eduard:superPasswordMyUserSettings2024@localhost:8085/myUserSettingsDB?sslmode=disable
+
+listener:
+  addr: :8000
+
+cop:
+  disabled: true
+  endpoint: "http://..."
+  upstream: "http://..."
+  service_name: my-user-settings-service
+  service_port: 80

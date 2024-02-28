@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    container_name: myUserSettings-postgres
+    environment:
+      POSTGRES_DB: myUserSettingsDB
+      POSTGRES_USER: Eduard
+      POSTGRES_PASSWORD: superPasswordMyUserSettings2024
+    ports:
+      - "8085:5432"
