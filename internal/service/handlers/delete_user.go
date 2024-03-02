@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"encoding/json"
+	"my-user-settings-service/internal/service/utils"
 	"net/http"
 )
 
@@ -9,19 +9,21 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	log := Log(r)
 	log.Info("Getting user profile")
 
-	// Тут ви можете реалізувати логіку для отримання профілю користувача і надсилання відповіді
-	// Наприклад, відправка запиту до бази даних і повернення результату
-
-	// Приклад відповіді
-	profile := map[string]interface{}{
-		"name":  "John Doe",
-		"email": "john.doe@example.com",
-		// Інші дані профілю...
+	var userID, err = utils.ParseUserIDFromURL(r)
+	if err != nil {
+		log.Errorf("Failed to parse user ID from URL: %v", err)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
 	}
 
-	// Відправляємо відповідь з JSON-представленням профілю
-	// Це простий приклад; реальна реалізація може відрізнятися
-	// Імпортуйте пакет encoding/json, якщо вам це потрібно
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(profile)
+	// Оновлення даних користувача у базі даних
+	err = UsersQ(r).Delete(userID)
+	if err != nil {
+		log.Errorf("Failed to update data of user: %v", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte("User delete successfully"))
 }
