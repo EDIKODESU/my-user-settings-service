@@ -3,18 +3,19 @@ package requests
 import (
 	"encoding/json"
 	"errors"
+	"my-user-settings-service/internal/data"
 	"my-user-settings-service/internal/service/utils"
 	"net/http"
 )
 
 // NewUser описує структуру нового користувача
-type NewUser struct {
-	FirstName  string `json:"first_name"`
-	SecondName string `json:"second_name"`
-	Login      string `json:"login"`
-	Email      string `json:"mail"`
-	Password   string `json:"password"`
-}
+//type NewUser struct {
+//	FirstName  string `json:"first_name"`
+//	SecondName string `json:"second_name"`
+//	Login      string `json:"login"`
+//	Email      string `json:"mail"`
+//	Password   string `json:"password"`
+//}
 
 // NewUserRequest описує структуру запиту на створення нового користувача
 type NewUserRequest struct {
@@ -29,16 +30,16 @@ type NewUserRequest struct {
 	} `json:"data"`
 }
 
-func NewCreateUserRequest(r *http.Request) ([]NewUser, error) {
+func NewCreateUserRequest(r *http.Request) ([]data.Users, error) {
 	var req NewUserRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		return nil, err
 	}
 
-	var newUsers []NewUser
+	var newUsers []data.Users
 	for _, userData := range req.Data {
-		newUser := NewUser{
+		newUser := data.Users{
 			FirstName:  userData.Attributes.FirstName,
 			SecondName: userData.Attributes.SecondName,
 			Login:      userData.Attributes.Login,
@@ -63,7 +64,7 @@ func NewCreateUserRequest(r *http.Request) ([]NewUser, error) {
 	return newUsers, nil
 }
 
-func validateNewUser(user NewUser) error {
+func validateNewUser(user data.Users) error {
 	if user.FirstName == "" {
 		return errors.New("first_name field cannot be empty")
 	}

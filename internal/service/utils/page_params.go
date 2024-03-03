@@ -13,10 +13,9 @@ type Links struct {
 }
 
 func ParsePaginationParams(r *http.Request) (int, int) {
-	pageStr := r.URL.Query().Get("page")
-	perPageStr := r.URL.Query().Get("per_page")
+	pageStr := r.URL.Query().Get("page[offset]")
+	perPageStr := r.URL.Query().Get("page[limit]")
 
-	// Перетворення рядків параметрів у цілі числа
 	page, err := strconv.Atoi(pageStr)
 	if err != nil || page <= 0 {
 		page = 1
@@ -29,31 +28,38 @@ func ParsePaginationParams(r *http.Request) (int, int) {
 	return page, perPage
 }
 
-func GetNextPage(baseURL string, page, totalPages, perPage int) (string, error) {
+func GetSelfPage(r *http.Request, page, perPage int) (string, error) {
+	self, err := buildPaginationLink(r.URL.Path, r.Host, page, perPage)
+	return self, err
+}
+
+func GetNextPage(r *http.Request, page, totalPages, perPage int) (string, error) {
 	if page < totalPages {
 		nextPage := page + 1
-		nextLink, err := buildPaginationLink(baseURL, nextPage, perPage)
+		nextLink, err := buildPaginationLink(r.URL.Path, r.Host, nextPage, perPage)
 		return nextLink, err
 	}
 	return "", nil
 }
 
-func GetLastPage(baseURL string, totalPages, perPage int) (string, error) {
-	lastLink, err := buildPaginationLink(baseURL, totalPages, perPage)
+func GetLastPage(r *http.Request, totalPages, perPage int) (string, error) {
+	lastLink, err := buildPaginationLink(r.URL.Path, r.Host, totalPages, perPage)
 	return lastLink, err
 }
 
-func buildPaginationLink(baseURL string, page, perPage int) (string, error) {
+func buildPaginationLink(baseURL, host string, page, perPage int) (string, error) {
 	u, err := url.Parse(baseURL)
+
 	if err != nil {
 		return "", err
 	}
 
-	// Параметри пагінації
 	queryParams := u.Query()
-	queryParams.Set("page[offset]", strconv.Itoa((page-1)*perPage))
+	queryParams.Set("page[offset]", strconv.Itoa(page))
 	queryParams.Set("page[limit]", strconv.Itoa(perPage))
 	u.RawQuery = queryParams.Encode()
 
-	return u.String(), nil
+	link := "http://" + host + u.String()
+
+	return link, nil
 }

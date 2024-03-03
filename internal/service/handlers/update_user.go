@@ -11,7 +11,6 @@ func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
 	log := Log(r)
 	log.Info("Updating user")
 
-	// Отримання нові дані про користувача з запиту
 	updateUser, err := requests.UpdateUserRequest(r)
 	if err != nil {
 		log.Errorf("Failed to parse update user request: %v", err)
@@ -26,7 +25,6 @@ func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Оновлення даних користувача у базі даних
 	err = UsersQ(r).Update(updateUser)
 	if err != nil {
 		log.Errorf("Failed to update data of user: %v", err)

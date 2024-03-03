@@ -4,7 +4,6 @@ import (
 	"github.com/Masterminds/squirrel"
 	"gitlab.com/distributed_lab/kit/pgdb"
 	"my-user-settings-service/internal/data"
-	"my-user-settings-service/internal/service/requests"
 )
 
 func NewUsersQ(db *pgdb.DB) data.UsersQ {
@@ -21,8 +20,18 @@ func (q *usersQ) New() data.UsersQ {
 	return NewUsersQ(q.db)
 }
 
-func (q *usersQ) Insert(newUsers []requests.NewUser) error {
-	// Логіка для вставки користувача у базу даних
+func (q *usersQ) Insert(newUsers []data.Users) error {
+	for _, newUser := range newUsers {
+		query := squirrel.Insert("users").
+			Columns("first_name", "second_name", "mail", "login", "password").
+			Values(newUser.FirstName, newUser.SecondName, newUser.Email, newUser.Login, newUser.Password).
+			Suffix("RETURNING id")
+		_, err := q.db.ExecWithResult(query)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -42,7 +51,7 @@ func (q *usersQ) Select(page, perPage int) ([]data.Users, error) {
 	return users, nil
 }
 
-func (q *usersQ) Update(updateUser requests.UpdateUser) error {
+func (q *usersQ) Update(updateUser data.Users) error {
 	query := squirrel.Update("users")
 
 	if updateUser.FirstName != "" {

@@ -16,7 +16,6 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Оновлення даних користувача у базі даних
 	err = UsersQ(r).Delete(userID)
 	if err != nil {
 		log.Errorf("Failed to update data of user: %v", err)
