@@ -1,8 +1,0 @@
-in: query
-name: 'page[limit]'
-required: false
-schema:
-  type: integer
-  minimum: 1
-  default: 10
-  description: Numbers of items per page to return.
