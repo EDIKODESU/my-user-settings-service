@@ -1,0 +1,23 @@
+allOf:
+  - $ref: '#/components/schemas/CreateUserKey'
+  - type: object
+    properties:
+      attributes:
+        type: object
+        required:
+          - first_name
+          - second_name
+          - login
+          - password
+          - mail
+        properties:
+          first_name:
+            type: string
+          second_name:
+            type: string
+          login:
+            type: string
+          password:
+            type: string
+          mail:
+            type: string

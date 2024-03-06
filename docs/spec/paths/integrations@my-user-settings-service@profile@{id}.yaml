@@ -1,0 +1,62 @@
+put:
+  tags:
+    - User-Settings
+  summary: Update user
+  operationId: updateUser
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+        format: int64
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          $ref: '#/components/schemas/UpdateUser'
+  responses:
+    '200':
+      description: User update successfully
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerError'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+
+delete:
+  tags:
+    - User-Settings
+  summary: Delete user
+  operationId: deleteUser
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '200':
+      description: User delete successfully
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerError'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'

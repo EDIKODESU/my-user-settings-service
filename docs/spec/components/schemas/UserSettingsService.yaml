@@ -1,0 +1,18 @@
+allOf:
+  - $ref: '#/components/schemas/UserSettingsServiceKey'
+  - type: object
+    required:
+      - attributes
+    properties:
+      attributes:
+        type: object
+        required:
+          - endpoint
+          - channels
+        properties:
+          endpoint:
+            type: string
+          channels:
+            type: array
+            items:
+              type: string

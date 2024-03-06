@@ -1,0 +1,11 @@
+properties:
+  first_name:
+    type: string
+  second_name:
+    type: string
+  login:
+    type: string
+  password:
+    type: string
+  email:
+    type: string

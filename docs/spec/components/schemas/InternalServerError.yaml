@@ -1,0 +1,10 @@
+components:
+  schemas:
+    InternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A message describing the error.
+      example:
+        message: Internal Server Error
