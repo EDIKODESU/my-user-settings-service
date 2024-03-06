@@ -15,7 +15,6 @@ put:
     content:
       application/json:
         schema:
-          type: object
           $ref: '#/components/schemas/UpdateUser'
   responses:
     '200':

@@ -1,20 +1,9 @@
-components:
-  schemas:
-    BadRequestError:
-      type: object
-      required:
-        - error
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-              description: Message describing the error.
-            code:
-              type: string
-              description: Unique code for the error.
-      example:
-        error:
-          message: The request is invalid.
-          code: BAD_REQUEST
+type: object
+required:
+  - message
+properties:
+  message:
+    type: string
+    description: A message describing the error.
+example:
+  message: "Bad Request"

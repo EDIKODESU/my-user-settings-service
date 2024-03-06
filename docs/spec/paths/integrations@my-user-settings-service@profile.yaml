@@ -12,18 +12,22 @@ post:
             - data
           properties:
             data:
-              type: object
               $ref: '#/components/schemas/CreateUser'
   responses:
     '200':
       description: User created successfully
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerError'
     '400':
       description: Bad Request
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/BadRequestError'
-
 get:
   tags:
     - User-Settings
@@ -73,9 +77,3 @@ get:
         application/json:
           schema:
             $ref: '#/components/schemas/InternalServerError'
-    '400':
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BadRequestError'
