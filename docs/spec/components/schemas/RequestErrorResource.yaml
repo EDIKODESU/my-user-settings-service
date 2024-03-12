@@ -1,0 +1,15 @@
+type: object
+properties:
+  status:
+    type: string
+    enum:
+      - 400
+      - 500
+  title:
+    type: string
+  detail:
+    type: string
+required:
+  - status
+  - title
+  - detail
