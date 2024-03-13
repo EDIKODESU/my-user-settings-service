@@ -1,0 +1,12 @@
+type: object
+description: "Provides links for pagination"
+properties:
+  self:
+    type: string
+    description: "link to the current page"
+  next:
+    type: string
+    description: "link to the next page"
+  last:
+    type: string
+    description: "link to the last page"
