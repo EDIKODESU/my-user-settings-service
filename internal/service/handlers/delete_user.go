@@ -26,6 +26,5 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte("User delete successfully"))
+	w.WriteHeader(http.StatusNoContent)
 }

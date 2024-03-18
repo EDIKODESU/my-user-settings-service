@@ -27,6 +27,5 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte("User created successfully"))
+	w.WriteHeader(http.StatusNoContent)
 }

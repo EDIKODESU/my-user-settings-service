@@ -58,6 +58,9 @@ func GetNextPage(r *http.Request, page, totalPages, perPage int) (string, error)
 }
 
 func GetLastPage(r *http.Request, totalPages, perPage int) (string, error) {
+	if totalPages <= 1 {
+		return GetSelfPage(r, 1, perPage)
+	}
 	lastLink, err := buildPaginationLink(r.URL.Path, r.Host, totalPages, perPage)
 	return lastLink, err
 }

@@ -21,18 +21,20 @@ func (q *usersQ) New() data.UsersQ {
 }
 
 func (q *usersQ) Insert(newUsers []data.Users) error {
-	for _, newUser := range newUsers {
-		query := squirrel.Insert("users").
-			Columns("first_name", "second_name", "mail", "login", "password").
-			Values(newUser.FirstName, newUser.SecondName, newUser.Email, newUser.Login, newUser.Password).
-			Suffix("RETURNING id")
-		_, err := q.db.ExecWithResult(query)
-		if err != nil {
-			return err
+	err := q.db.Transaction(func() error {
+		for _, newUser := range newUsers {
+			query := squirrel.Insert("users").
+				Columns("first_name", "second_name", "mail", "login", "password").
+				Values(newUser.FirstName, newUser.SecondName, newUser.Email, newUser.Login, newUser.Password).
+				Suffix("RETURNING id")
+			_, err := q.db.ExecWithResult(query)
+			if err != nil {
+				return err
+			}
 		}
-	}
-
-	return nil
+		return nil
+	})
+	return err
 }
 
 func (q *usersQ) Select(page, perPage int) ([]data.Users, error) {

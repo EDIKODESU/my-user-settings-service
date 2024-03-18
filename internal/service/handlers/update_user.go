@@ -36,6 +36,5 @@ func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte("User update successfully"))
+	w.WriteHeader(http.StatusNoContent)
 }
